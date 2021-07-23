@@ -1,12 +1,12 @@
 ﻿using System;
 namespace SquadraCalcio
 {
-    public class Calciatore
+    public abstract class Calciatore
     {
         public int NumeroMaglia { get; set; }
         public string Nome { get; set; }
         public DateTime DataDiNascita { get; set; }
-        public Categoria Ruolo { get; set; }
+        public Categoria Ruolo { get; set; } 
 
         public override string ToString()
         {

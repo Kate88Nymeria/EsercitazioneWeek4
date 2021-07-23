@@ -61,9 +61,9 @@ namespace SquadraCalcio.Utilities
             return numeroIntero;
         }
 
-        public static int MagliaInseritaGiaEsistente(ArrayList calciatori)
+        public static int MagliaInseritaGiaEsistente(List<Calciatore> calciatori)
         {
-            //calciatori = new ArrayList();
+            calciatori = new List<Calciatore>();
             bool numeroCorretto = false;
             int numeroInserito = 0;
 

@@ -11,6 +11,6 @@ namespace SquadraCalcio
         public string CampionatoDisputato { get; set; }
         public string NomePresidente { get; set; }
         public string NomeAllenatore { get; set; }
-        public ArrayList Rosa { get; set; }
+        public List<Calciatore> Rosa { get; set; }
     }
 }
