@@ -1,10 +1,11 @@
 ﻿using System;
 namespace SquadraCalcio
 {
-    public class Categoria
+    public enum Categoria
     {
-        public Categoria()
-        {
-        }
+        Portiere,
+        Difensore,
+        Centrocampista,
+        Attaccante
     }
 }

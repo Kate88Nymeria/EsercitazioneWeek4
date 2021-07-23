@@ -6,7 +6,11 @@ namespace SquadraCalcio
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("------ BENVENUTO ------");
+
+            Menu.Start();
+
+            Console.WriteLine("------ Bye Bye ------");
         }
     }
 }
