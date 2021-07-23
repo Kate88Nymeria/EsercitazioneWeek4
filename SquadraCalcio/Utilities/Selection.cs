@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace SquadraCalcio.Utilities
 {
     public class Selection
@@ -38,15 +40,49 @@ namespace SquadraCalcio.Utilities
         //    return giocatore;
         //}
 
-        public static void ConvertiCalciatoreInRuolo(Calciatore giocatore)
+        //public static void ConvertiCalciatoreInRuolo(Calciatore giocatore)
+        //{
+        //    Portiere p = giocatore as Portiere;
+
+        //    Difensore d = giocatore as Difensore;
+
+        //    Centrocampista c = giocatore as Centrocampista;
+
+        //    Attaccante a = giocatore as Attaccante;
+        //}
+
+        public static Calciatore ScegliMaglia(List<Calciatore> calciatori)
         {
-            Portiere p = giocatore as Portiere;
+            int numeroMaglia = 0;
+            bool numeroCorretto = false;
+            
+            do
+            {
+                numeroMaglia = Check.InteroNumeroMaglia();
 
-            Difensore d = giocatore as Difensore;
+                if (calciatori.Count != 0)
+                {
+                    foreach (Calciatore c in calciatori)
+                    {
+                        if (numeroMaglia == c.NumeroMaglia)
+                        {
+                            return c;
+                        }
+                    }
 
-            Centrocampista c = giocatore as Centrocampista;
+                    if(numeroMaglia == 0)
+                    {
+                        Console.WriteLine("Errore: Numero di giocatore inserito non valido. Riprova:");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("La lista è vuota, non puoi scegliere alcun giocatore");
+                    numeroCorretto = true;
+                }
+            } while (!numeroCorretto);
 
-            Attaccante a = giocatore as Attaccante;
+            return null;
         }
     }
 }

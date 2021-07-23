@@ -5,7 +5,10 @@ namespace SquadraCalcio
 {
     public class SquadraManager
     {
-        public static List<Calciatore> squadraTitolare;
+        //public static List<Calciatore> riserve;
+        //public static List<Calciatore> squadraTitolare;
+        public static List<Calciatore> squadraTitolare = DataFile.team.Rosa;
+        public static List<Calciatore> riserve = DataFile.team.Rosa;
 
         public static void AggiungiGiocatore()
         {
@@ -83,7 +86,7 @@ namespace SquadraCalcio
                     DataFile.team.Rosa.Add(a);
                     break;
             }                
-        }
+        } //eccezione, rivedere
 
         //public static void AggiungiGiocatore()
         //{
@@ -140,175 +143,162 @@ namespace SquadraCalcio
 
         public static void VendiGiocatore()
         {
-            Console.WriteLine("------ VENDI GIOCATORE ------");
+            Console.WriteLine("------ VENDI GIOCATORE IN RISERVA ------");
             Console.WriteLine();
 
-            StampaGiocatori();
+            StampaGiocatoriRiserva();
             Console.WriteLine();
             Console.WriteLine("Inserisci il numero della maglia del giocatore da vendere:");
-            int maglia = Utilities.Check.InteroNumeroMaglia();
-            int conta = 0;
-            bool numeroCorretto = false;
+            Calciatore calciatoreDaVendere = Utilities.Selection.ScegliMaglia(DataFile.team.Rosa);
 
-            do
-            {
-                foreach (Calciatore c in DataFile.team.Rosa)
-                {
-                    if (maglia == c.NumeroMaglia)
-                    {
-                        Console.WriteLine($"Hai venduto {c.Nome}");
-                        DataFile.team.Rosa.Remove(c);
-                        numeroCorretto = true;
-                    }
-                    else
-                    {
-                        conta++;
-                    }
-                }
-
-                if (conta == DataFile.team.Rosa.Count)
-                {
-                    Console.WriteLine("Errore: Il numero di maglia inserito non è presente nella squadra. Riprova:");
-                }
-            } while (!numeroCorretto);
+            Console.WriteLine($"Hai venduto {calciatoreDaVendere.Nome}");
+            Console.WriteLine($"Premi un tasto per continuare");
+            Console.ReadKey();
+            Console.Clear();
+            DataFile.team.Rosa.Remove(calciatoreDaVendere);
         }
 
-        public static void StampaGiocatori()
+        public static void StampaGiocatoriRiserva()
         {
-            Console.WriteLine($"{0,-10}{1,-30}{2,-20}{3,-20}", "Numero Maglia", "Nome", "Ruolo", "Data di Nascita");
-            Console.WriteLine("-", 150);
+            string stringaGiocatori = "";
 
-            foreach (Calciatore c in DataFile.team.Rosa)
+            Console.WriteLine("{0,-10}{1,-30}{2,-20}{3,-20}{4,15}{5, 15}{6, 20}{7,20}{8,20}{9,20}", "Maglia", "Nome", "Ruolo", "Data di Nascita", "Goal Subiti", "Rigori Parati",
+                "Tackle Riusciti", "Passaggi Tentati", "Passaggi Riusciti", "Goal Realizzati");
+            Console.WriteLine(new string('-', 200));
+
+            foreach (Calciatore c in riserve)
             {
-                Console.WriteLine(c);
+                stringaGiocatori += (c + Environment.NewLine);
             }
-        }
+            Console.WriteLine(stringaGiocatori);
+        } //cancellare public static List<Calciatore> riserve = DataFile.team.Rosa; in alto
 
-        public static void GestisciSquadraTitolare()
-        {
-            Console.WriteLine("------ GESTISCI SQUADRA TITOLARE ------");
-            Console.WriteLine();
-
-            StampaGiocatori();
-            List<Calciatore> squadraTit= new List<Calciatore>();
-            int contaPortieri = 0;
-            int contaDifensori = 0;
-            int contaCentrocampisti = 0;
-            int contaAttaccanti = 0;
-
-            for(int i = 0; i < 11; i++)
-            {
-                Console.WriteLine("Inserisci il numero della maglia del giocatore da vendere:");
-                int maglia = Utilities.Check.InteroNumeroMaglia();
-
-                foreach (Calciatore c in squadraTit)
-                {
-                    if (c is Portiere)
-                        contaPortieri++;
-                    else if (c is Difensore)
-                        contaDifensori++;
-                    else if (c is Centrocampista)
-                        contaCentrocampisti++;
-                    else
-                        contaAttaccanti++;
-                }
-
-                int conta = 0;
-                bool numeroCorretto = false;
-
-                do
-                {
-                    foreach (Calciatore c in DataFile.team.Rosa)
-                    {
-                        if (maglia == c.NumeroMaglia)
-                        {
-                            numeroCorretto = true;
-                        }
-                        else
-                        {
-                            conta++;
-                        }
-                    }
-
-                    if (conta == DataFile.team.Rosa.Count)
-                    {
-                        Console.WriteLine("Errore: Il numero di maglia inserito non è presente nella squadra. Riprova:");
-                    }
-                } while (!numeroCorretto);
-
-                foreach (Calciatore c in DataFile.team.Rosa)
-                {
-                    if(maglia == c.NumeroMaglia)
-                    {
-                        if (c is Portiere && contaPortieri == 0)
-                            squadraTit.Add(c);
-                        else if (c is Difensore && contaDifensori < 5)
-                            squadraTit.Add(c);
-                        else if (c is Centrocampista && contaCentrocampisti < 5)
-                            squadraTit.Add(c);
-                        else if (contaAttaccanti < 3)
-                            squadraTit.Add(c);
-                    }
-
-                    Console.WriteLine($"Hai inserito {c.Nome} nel ruolo di {c.Ruolo}");
-                }
-            }
-
-            squadraTitolare = squadraTit;
-        }
-
-        public static void StampaSquadraTitolare()
+        public static void StampaGiocatoriTitolari()
         {
             Console.WriteLine("------ SQUADRA TITOLARE ------");
+
             Console.WriteLine();
+            Console.WriteLine("------ PORTIERE ------");
+            Console.WriteLine("{0,-10}{1,-30}{2,-20}{3,-20}{4,15}{5, 15}{6, 20}{7,20}{8,20}{9,20}", "Maglia", "Nome", "Ruolo", "Data di Nascita", "Goal Subiti", "Rigori Parati",
+               "Tackle Riusciti", "Passaggi Tentati", "Passaggi Riusciti", "Goal Realizzati");
+            Console.WriteLine(new string('-', 200));
 
-            if(squadraTitolare.Count == 0)
+            foreach (Calciatore giocatore in squadraTitolare)
             {
-                Console.WriteLine("Attenzione. La squadra titolare è vuota.");
+                if(giocatore is Portiere)
+                    Console.WriteLine(giocatore);
             }
-            else
+
+            Console.WriteLine();
+            Console.WriteLine("------ DIFENSORI ------");
+            Console.WriteLine("{0,-10}{1,-30}{2,-20}{3,-20}{4,15}{5, 15}{6, 20}{7,20}{8,20}{9,20}", "Maglia", "Nome", "Ruolo", "Data di Nascita", "Goal Subiti", "Rigori Parati",
+               "Tackle Riusciti", "Passaggi Tentati", "Passaggi Riusciti", "Goal Realizzati");
+            Console.WriteLine(new string('-', 200));
+
+            foreach (Calciatore giocatore in squadraTitolare)
             {
-                Console.WriteLine("------ PORTIERI ------");
-                Console.WriteLine();
-                Console.WriteLine($"{0,-10}{1,-30}{2,-20}{3,-20}{4,-20}", "Numero Maglia", "Nome", "Data di Nascita", "Goal Subiti", "Rigori Parati");
-                Console.WriteLine("-", 150);
-                foreach (Portiere p in squadraTitolare)
-                {
-                    Console.WriteLine(p);
-                }
-                Console.WriteLine();
-
-                Console.WriteLine("------ DIFENSORI ------");
-                Console.WriteLine();
-                Console.WriteLine($"{0,-10}{1,-30}{2,-20}{3,-20}", "Numero Maglia", "Nome", "Data di Nascita", "Contrasti Riusciti");
-                Console.WriteLine("-", 150);
-                foreach (Difensore d in squadraTitolare)
-                {
-                    Console.WriteLine(d);
-                }
-                Console.WriteLine();
-
-                Console.WriteLine("------ CENTROCAMPISTI ------");
-                Console.WriteLine();
-                Console.WriteLine($"{0,-10}{1,-30}{2,-20}{3,-20}{4,-20}", "Numero Maglia", "Nome", "Data di Nascita", "Passaggi Tentati", "Passaggi Riusciti");
-                Console.WriteLine("-", 150);
-                foreach (Centrocampista c in squadraTitolare)
-                {
-                    Console.WriteLine(c);
-                }
-                Console.WriteLine();
-
-                Console.WriteLine("------ ATTACCANTI ------");
-                Console.WriteLine();
-                Console.WriteLine($"{0,-10}{1,-30}{2,-20}{3,-20}", "Numero Maglia", "Nome", "Data di Nascita", "Goal Realizzati");
-                Console.WriteLine("-", 150);
-                foreach (Attaccante a in squadraTitolare)
-                {
-                    Console.WriteLine(a);
-                }
+                if (giocatore is Difensore)
+                    Console.WriteLine(giocatore);
             }
-            
-        }
 
+            Console.WriteLine();
+            Console.WriteLine("------ CENTROCAMPISTI ------");
+            Console.WriteLine("{0,-10}{1,-30}{2,-20}{3,-20}{4,15}{5, 15}{6, 20}{7,20}{8,20}{9,20}", "Maglia", "Nome", "Ruolo", "Data di Nascita", "Goal Subiti", "Rigori Parati",
+               "Tackle Riusciti", "Passaggi Tentati", "Passaggi Riusciti", "Goal Realizzati");
+            Console.WriteLine(new string('-', 200));
+
+            foreach (Calciatore giocatore in squadraTitolare)
+            {
+                if (giocatore is Centrocampista)
+                    Console.WriteLine(giocatore);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("------ ATTACCANTI ------");
+            Console.WriteLine("{0,-10}{1,-30}{2,-20}{3,-20}{4,15}{5, 15}{6, 20}{7,20}{8,20}{9,20}", "Maglia", "Nome", "Ruolo", "Data di Nascita", "Goal Subiti", "Rigori Parati",
+               "Tackle Riusciti", "Passaggi Tentati", "Passaggi Riusciti", "Goal Realizzati");
+            Console.WriteLine(new string('-', 200));
+
+            foreach (Calciatore giocatore in squadraTitolare)
+            {
+                if (giocatore is Attaccante)
+                    Console.WriteLine(giocatore);
+            }
+
+            Console.WriteLine();
+        } //cancellare public static List<Calciatore> squadraTitolare = DataFile.team.Rosa; in alto
+
+        //public static void GestisciSquadraTitolare()
+        //{
+        //    Console.WriteLine("------ GESTISCI SQUADRA TITOLARE ------");
+        //    Console.WriteLine();
+
+        //    StampaGiocatoriRiserva();
+        //    List<Calciatore> squadraTit = new List<Calciatore>();
+        //    int contaPortieri = 0;
+        //    int contaDifensori = 0;
+        //    int contaCentrocampisti = 0;
+        //    int contaAttaccanti = 0;
+
+        //    for (int i = 0; i < 11; i++)
+        //    {
+        //        Console.WriteLine("Inserisci il numero della maglia del giocatore da vendere:");
+        //        int maglia = Utilities.Check.InteroNumeroMaglia();
+
+        //        foreach (Calciatore c in squadraTit)
+        //        {
+        //            if (c is Portiere)
+        //                contaPortieri++;
+        //            else if (c is Difensore)
+        //                contaDifensori++;
+        //            else if (c is Centrocampista)
+        //                contaCentrocampisti++;
+        //            else
+        //                contaAttaccanti++;
+        //        }
+
+        //        int conta = 0;
+        //        bool numeroCorretto = false;
+
+        //        do
+        //        {
+        //            foreach (Calciatore c in DataFile.team.Rosa)
+        //            {
+        //                if (maglia == c.NumeroMaglia)
+        //                {
+        //                    numeroCorretto = true;
+        //                }
+        //                else
+        //                {
+        //                    conta++;
+        //                }
+        //            }
+
+        //            if (conta == DataFile.team.Rosa.Count)
+        //            {
+        //                Console.WriteLine("Errore: Il numero di maglia inserito non è presente nella squadra. Riprova:");
+        //            }
+        //        } while (!numeroCorretto);
+
+        //        foreach (Calciatore c in DataFile.team.Rosa)
+        //        {
+        //            if (maglia == c.NumeroMaglia)
+        //            {
+        //                if (c is Portiere && contaPortieri == 0)
+        //                    squadraTit.Add(c);
+        //                else if (c is Difensore && contaDifensori < 5)
+        //                    squadraTit.Add(c);
+        //                else if (c is Centrocampista && contaCentrocampisti < 5)
+        //                    squadraTit.Add(c);
+        //                else if (contaAttaccanti < 3)
+        //                    squadraTit.Add(c);
+        //            }
+
+        //            Console.WriteLine($"Hai inserito {c.Nome} nel ruolo di {c.Ruolo}");
+        //        }
+        //    }
+
+        //    squadraTitolare = squadraTit;
+        //} //correggere, gestire liste riserve e squadraTitolare
     }
 }

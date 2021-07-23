@@ -33,11 +33,14 @@ namespace SquadraCalcio
                         break;
                     case 3:
                         Console.Clear();
-                        SquadraManager.GestisciSquadraTitolare();
+                        SquadraTitolareManager.GestisciSquadraTitolare();
                         break;
                     case 4:
                         Console.Clear();
-                        SquadraManager.StampaSquadraTitolare();
+                        SquadraManager.StampaGiocatoriTitolari();
+                        Console.WriteLine("Premi un tasto per uscire");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case 0:
                         Console.Clear();
